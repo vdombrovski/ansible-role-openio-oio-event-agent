@@ -6,4 +6,8 @@
 - src: https://github.com/open-io/ansible-role-openio-repository.git
   version: master
   name: repo
+
+- src: https://github.com/open-io/ansible-role-openio-namespace.git
+  version: master
+  name: namespace
 ...
