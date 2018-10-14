@@ -1,4 +1,4 @@
-# roles/ROLENAME/tasks/main.yml
+# roles/event_agent/tasks/main.yml
 ---
 - name: "Include {{ ansible_distribution }} variables"
   include_vars: "{{ item }}"
@@ -33,10 +33,10 @@
     path: "{{ item }}"
   register: _dir
   with_items:
-    - "/etc/gridinit.d/{{ openio_ROLENAME_namespace }}"
-    - "{{ openio_ROLENAME_sysconfig_dir }}/ROLENAME-{{ openio_ROLENAME_serviceid }}"
-    #- "{{ openio_ROLENAME_volume }}"
-    - "/var/log/oio/sds/{{ openio_ROLENAME_namespace }}/ROLENAME-{{ openio_ROLENAME_serviceid }}"
+    - "/etc/gridinit.d/{{ openio_event_agent_namespace }}"
+    - "{{ openio_event_agent_sysconfig_dir }}/oio-event-agent-{{ openio_event_agent_serviceid }}"
+    #- "{{ openio_event_agent_volume }}"
+    - "/var/log/oio/sds/{{ openio_event_agent_namespace }}/oio-event-agent-{{ openio_event_agent_serviceid }}"
 
 - name: Ensure directories exists
   file:
@@ -58,20 +58,23 @@
     group: openio
     mode: 0644
   with_items:
-    - src: "ROLENAME.conf.j2"
-      dest: "{{ openio_ROLENAME_sysconfig_dir }}/\
-        ROLENAME-{{ openio_ROLENAME_serviceid }}/ROLENAME-{{ openio_ROLENAME_serviceid }}.conf"
-    - src: "gridinit_ROLENAME.conf.j2"
-      dest: "{{ openio_ROLENAME_gridinit_dir }}/{{ openio_ROLENAME_gridinit_file_prefix }}\
-        ROLENAME-{{ openio_ROLENAME_serviceid }}.conf"
-  register: _ROLENAME_conf
+    - src: "event_agent.conf.j2"
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+        oio-event-agent-{{ openio_event_agent_serviceid }}/oio-event-agent-{{ openio_event_agent_serviceid }}.conf"
+    - src: "event_agent_handlers.conf.j2"
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+        oio-event-agent-{{ openio_event_agent_serviceid }}/oio-event-handlers.conf"
+    - src: "gridinit_event_agent.conf.j2"
+      dest: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\
+        oio-event-agent-{{ openio_event_agent_serviceid }}.conf"
+  register: _event_agent_conf
 
-- name: restart ROLENAME
+- name: restart event_agent
   shell: |
     gridinit_cmd reload
-    gridinit_cmd restart  {{openio_ROLENAME_namespace}}-ROLENAME-{{openio_ROLENAME_serviceid}}
-  when: 
-    - _ROLENAME_conf.changed
-    - not openio_ROLENAME_provision_only
+    gridinit_cmd restart  {{openio_event_agent_namespace}}-oio-event-agent-{{openio_event_agent_serviceid}}
+  when:
+    - _event_agent_conf.changed
+    - not openio_event_agent_provision_only
   tags: configure
 ...

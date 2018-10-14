@@ -1,0 +1,126 @@
+# {{ ansible_managed }}
+### handlers
+[handler:storage.content.new]
+pipeline = {{ openio_event_agent_storage_content_new_pipeline | join(' ') }}
+
+[handler:storage.content.append]
+pipeline = {{ openio_event_agent_storage_content_append_pipeline | join(' ') }}
+
+[handler:storage.content.broken]
+pipeline = {{ openio_event_agent_storage_content_broken_pipeline | join(' ') }}
+
+[handler:storage.content.deleted]
+pipeline = {{ openio_event_agent_storage_content_deleted_pipeline | join(' ') }}
+
+[handler:storage.content.perfectible]
+pipeline = {{ openio_event_agent_storage_content_perfectible_pipeline | join(' ') }}
+
+[handler:storage.container.new]
+pipeline = {{ openio_event_agent_storage_container_new_pipeline | join(' ') }}
+
+[handler:storage.container.deleted]
+pipeline = {{ openio_event_agent_storage_container_deleted_pipeline | join(' ') }}
+
+[handler:storage.container.state]
+pipeline = {{ openio_event_agent_storage_container_state_pipeline | join(' ') }}
+
+[handler:storage.chunk.new]
+pipeline = {{ openio_event_agent_storage_chunk_new_pipeline | join(' ') }}
+
+[handler:storage.chunk.deleted]
+pipeline = {{ openio_event_agent_storage_chunk_deleted_pipeline | join(' ') }}
+
+[handler:account.services]
+pipeline = {{ openio_event_agent_account_service_pipeline | join(' ') }}
+
+{% set pipeline_merged = openio_event_agent_storage_content_new_pipeline
+                       + openio_event_agent_storage_content_append_pipeline
+                       + openio_event_agent_storage_content_broken_pipeline
+                       + openio_event_agent_storage_content_deleted_pipeline
+                       + openio_event_agent_storage_container_new_pipeline
+                       + openio_event_agent_storage_container_deleted_pipeline
+                       + openio_event_agent_storage_container_state_pipeline
+                       + openio_event_agent_storage_chunk_new_pipeline
+                       + openio_event_agent_storage_chunk_deleted_pipeline
+                       + openio_event_agent_storage_content_perfectible_pipeline
+                       + openio_event_agent_account_service_pipeline %}
+### filters
+{% if 'noop' in pipeline_merged %}
+[filter:noop]
+{% for k, v in openio_event_agent_filter_noop.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'content_cleaner' in pipeline_merged %}
+[filter:content_cleaner]
+{% for k, v in openio_event_agent_filter_content_cleaner.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'content_rebuild' in pipeline_merged %}
+[filter:content_rebuild]
+{% for k, v in openio_event_agent_filter_content_rebuild.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'account_update' in pipeline_merged %}
+[filter:account_update]
+{% for k, v in openio_event_agent_filter_account_update.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'volume_index' in pipeline_merged %}
+[filter:volume_index]
+{% for k, v in openio_event_agent_filter_volume_index.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'logger' in pipeline_merged %}
+[filter:logger]
+{% for k, v in openio_event_agent_filter_logger.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'meta2_index' in pipeline_merged %}
+[filter:meta2_index]
+{% for k, v in openio_event_agent_filter_meta2_index.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'content_improve' in pipeline_merged %}
+[filter:content_improve]
+{% for k, v in openio_event_agent_filter_content_improve.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'quarantine' in pipeline_merged %}
+[filter:quarantine]
+{% for k, v in openio_event_agent_filter_quarantine.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% if 'replication' in pipeline_merged %}
+[filter:replication]
+{% for k, v in openio_event_agent_filter_replication.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+
+{% for name,params in openio_event_agent_filter_wildcard.iteritems() %}
+{%   if name in pipeline_merged %}
+[filter:{{ name }}]
+{%     for k, v in params.iteritems() %}
+{{ k }} = {{ v }}
+{%     endfor %}
+{%   endif %}
+
+{% endfor %}

@@ -1,6 +1,6 @@
-# roles/ROLENAME/vars/RedHat.yml
+# roles/event_agent/vars/RedHat.yml
 # Distribution-specific variables for RHEL, CentOS, ...
 ---
-ROLENAME_packages:
-  - openio-ROLENAME
+event_agent_packages:
+  - openio-sds-server
 ...

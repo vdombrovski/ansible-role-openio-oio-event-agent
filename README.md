@@ -1,70 +1,9 @@
+[![Build Status](https://travis-ci.org/open-io/ansible-role-openio-oio-event-agent.svg?branch=master)](https://travis-ci.org/open-io/ansible-role-openio-oio-event-agent)
+# Ansible role `event_agent`
 
-> **Remove this part after a clone**
+An Ansible role for oio-event-agent. Specifically, the responsibilities of this role are to:
 
-```sh
-git clone git@github.com:open-io/ansible-role-openio-skeleton.git ROLENAME
-cd ROLENAME
-grep -r -E '\b[A-Z]+\b' --exclude=LICENSE *
-find $PWD -type f -print0 | xargs -0 sed -i -e 's@ROLENAME@trueName@g'
-git remote -v
-git remote set-url origin git@github.com:open-io/ansible-role-openio-ROLENAME.git
-
-vi meta/main.yml # change purpose and tags
-vi README.md
-git worktree add docker-tests origin/docker-tests
-```
-
-It is **required** to:
-  - Change the author
-  - Choose one or many maintainers
-  - Change the purpose
-  - Change the rolename
-  - Inform the responsibilities of this role (README)
-  - Feed the `Role Variables` table (README)
-  - Add one or more examples of playbook (README)
-  - Activate tests in Travis CI
-  - Write functional tests in the branch `docker-tests`
-
-It is **recommended** to:
-  - Setup tests on your local machine (see below)
-
-> Use the following instructions to setup your testing environment
-> (make sure virtualenv2 is installed)
->
-```sh
-virtualenv2 env && source env/bin/activate
-pip install yamllint ansible-lint
-# Run tests run before each commit
-export HOOK=".git/hooks/prepare-commit-msg"
-if [ ! -f "$HOOK" ] ; then echo "#\!/bin/sh" > "$HOOK" && chmod +x "$HOOK"; fi
-cat << \EOF >> .git/hooks/prepare-commit-msg
-cmds=("ansible-lint . -x ANSIBLE0016" "yamllint -c .yamllint .")
-for cmd in "${cmds[@]}"; do
-  echo "Running ${cmd%% *}"
-  cmd_out="$($cmd)"
-  echo -n "${cmd_out}"
-  if [ "$cmd_out" ]; then
-      echo -e "\nRejecting commit: ${cmd%% *} returned errors"
-      exit 1
-  fi
-done
-EOF
-```
-
-#### `Role Variables` table
-```sh
-for i in $(grep -E "^openio_" defaults/main.yml |cut -d':' -f1| sort); do echo '|' '`'$i'`'' | `'$(grep $i defaults/main.yml|cut -d: -f2|sed -e "s/^ //")'` | ... |'; done
-```
-
------REMOVE--THE---8<-----PREVIOUS---PART------
-__
-
-[![Build Status](https://travis-ci.org/open-io/ansible-role-openio-ROLENAME.svg?branch=master)](https://travis-ci.org/open-io/ansible-role-openio-ROLENAME)
-# Ansible role `ROLENAME`
-
-An Ansible role for PURPOSE. Specifically, the responsibilities of this role are to:
-
--
+- Install and configure
 
 ## Requirements
 
@@ -75,7 +14,40 @@ An Ansible role for PURPOSE. Specifically, the responsibilities of this role are
 
 | Variable   | Default | Comments (type)  |
 | :---       | :---    | :---             |
-| `openio_ROLENAME_...` | `...`   | ...              |
+| `openio_event_agent_account_service_pipeline` | `list` | ... |
+| `openio_event_agent_acct_update` | `true` | ... |
+| `openio_event_agent_batch_size` | `500` | ... |
+| `openio_event_agent_filter_account_update` | `dict` | ... |
+| `openio_event_agent_filter_content_cleaner` | `dict` | ... |
+| `openio_event_agent_filter_content_improve` | `dict` | ... |
+| `openio_event_agent_filter_content_rebuild` | `dict` | ... |
+| `openio_event_agent_filter_indexing` | `dict` | ... |
+| `openio_event_agent_filter_logger` | `dict` | ... |
+| `openio_event_agent_filter_meta2_index` | `dict` | ... |
+| `openio_event_agent_filter_noop` | `dict` | ... |
+| `openio_event_agent_filter_quarantine` | `dict` | ... |
+| `openio_event_agent_filter_replication` | `dict` | ... |
+| `openio_event_agent_filter_volume_index` | `dict` | ... |
+| `openio_event_agent_gridinit_dir` | `"/etc/gridinit.d/{{ openio_event_agent_namespace }}"` | ... |
+| `openio_event_agent_gridinit_file_prefix` | `""` | ... |
+| `openio_event_agent_location` | `"{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"` | ... |
+| `openio_event_agent_namespace` | `"OPENIO"` | ... |
+| `openio_event_agent_provision_only` | `false` | ... |
+| `openio_event_agent_queue_url` | `"beanstalk://{{ ansible_default_ipv4.address }}:6014"` | ... |
+| `openio_event_agent_rdir_update` | `true` | ... |
+| `openio_event_agent_retries_per_second` | `30` | ... |
+| `openio_event_agent_serviceid` | `"0"` | ... |
+| `openio_event_agent_storage_chunk_deleted_pipeline` | `list` | ... |
+| `openio_event_agent_storage_chunk_new_pipeline` | `list` | ... |
+| `openio_event_agent_storage_container_deleted_pipeline` | `list` | ... |
+| `openio_event_agent_storage_container_new_pipeline` | `list` | ... |
+| `openio_event_agent_storage_container_state_pipeline` | `list` | ... |
+| `openio_event_agent_storage_content_append_pipeline` | `list` | ... |
+| `openio_event_agent_storage_content_broken_pipeline` | `list` | ... |
+| `openio_event_agent_storage_content_deleted_pipeline` | `list` | ... |
+| `openio_event_agent_storage_content_new_pipeline` | `list` | ... |
+| `openio_event_agent_storage_content_perfectible_pipeline` | `[]` | ... |
+| `openio_event_agent_tube` | `oio` | ... |
 
 ## Dependencies
 
@@ -85,10 +57,33 @@ No dependencies.
 
 ```yaml
 - hosts: all
-  gather_facts: true
   become: true
+  vars:
+    NS: OPENIO
   roles:
-    - role: ROLENAME
+    - role: repo
+    - role: repo
+      openio_repository_no_log: false
+      openio_repository_products:
+        sds:
+          release: "18.10"
+    - role: namespace
+      openio_namespace_name: "{{ NS }}"
+    - role: gridinit
+      openio_gridinit_namespace: "{{ NS }}"
+      openio_gridinit_per_ns: true
+    - role: role_under_test
+      openio_event_agent_namespace: "{{ NS }}"
+      openio_event_agent_queue_url: "beanstalk://{{ ansible_default_ipv4.address }}:6014"
+      openio_event_agent_storage_content_new_pipeline:
+        - indexing
+      openio_event_agent_storage_content_deleted_pipeline:
+        - indexing
+      openio_event_agent_filter_indexing:
+        use: "egg:oio#webhook"
+        endpoint: "http://192.168.1.2:8000/api/core/v1/namespaces/default/services/indexing/proxy/invoke"
+      openio_event_agent_storage_content_perfectible_pipeline:
+        - content_improve
 ```
 
 
@@ -112,7 +107,3 @@ Apache License, Version 2.0
 ## Contributors
 
 - [Cedric DELGEHIER](https://github.com/cdelgehier) (maintainer)
-- [Romain ACCIARI](https://github.com/racciari) (maintainer)
-- [Vincent LEGOLL](https://github.com/vincent-legoll) (maintainer)
-- [Sebastien LAPIERRE](https://github.com/sebastienlapierre) (maintainer)
-- [Geoffrey TIEN](https://github.com/GeoffreyTien) (maintainer)

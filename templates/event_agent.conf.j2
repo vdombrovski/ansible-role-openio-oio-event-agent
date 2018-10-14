@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+[event-agent]
+namespace = {{ openio_event_agent_namespace }}
+user = openio
+queue_url = {{ openio_event_agent_queue_url }}
+{% if openio_event_agent_workers %}
+worker = {{ openio_event_agent_workers }}
+{% endif %}
+{% if openio_event_agent_concurrency %}
+worker = {{ openio_event_agent_concurrency }}
+{% endif %}
+handlers_conf = /etc/oio/sds/{{ openio_event_agent_namespace }}/oio-event-agent-{{ openio_event_agent_serviceid }}/oio-event-handlers.conf
+tube = {{ openio_event_agent_tube }}
+retries_per_second = {{ openio_event_agent_retries_per_second }}
+batch_size = {{ openio_event_agent_batch_size }}
+acct_update = {{ openio_event_agent_acct_update | lower }}
+rdir_update = {{ openio_event_agent_rdir_update | lower }}
+log_facility = LOG_LOCAL0
+log_level = info
+log_name = oio-event-agent-{{ openio_event_agent_serviceid }}
+log_address = /dev/log
+syslog_prefix = OIO,{{ openio_event_agent_namespace }},oio-event-agent,{{ openio_event_agent_serviceid }}

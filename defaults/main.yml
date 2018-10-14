@@ -1,16 +1,101 @@
-# roles/ROLENAME/defaults/main.yml
+# roles/event_agent/defaults/main.yml
 ---
-openio_ROLENAME_namespace: "OPENIO"
-openio_ROLENAME_serviceid: "0"
+openio_event_agent_namespace: "OPENIO"
+openio_event_agent_serviceid: "0"
 
-openio_ROLENAME_gridinit_dir: "/etc/gridinit.d/{{ openio_ROLENAME_namespace }}"
-openio_ROLENAME_gridinit_file_prefix: ""
+openio_event_agent_gridinit_dir: "/etc/gridinit.d/{{ openio_event_agent_namespace }}"
+openio_event_agent_gridinit_file_prefix: ""
 
-#openio_ROLENAME_bind_interface: "{{ ansible_default_ipv4.alias }}"
-#openio_ROLENAME_bind_address:
-#  "{{ hostvars[inventory_hostname]['ansible_' + openio_ROLENAME_bind_interface]['ipv4']['address'] }}"
+openio_event_agent_workers: ""
+openio_event_agent_concurrency: ""
 
-#openio_ROLENAME_volume: "/var/lib/oio/sds/{{ openio_ROLENAME_namespace }}/ROLENAME-{{ openio_ROLENAME_serviceid }}"
-openio_ROLENAME_provision_only: false
-openio_ROLENAME_location: "{{ ansible_hostname }}.{{ openio_ROLENAME_serviceid }}"
+openio_event_agent_queue_url: "beanstalk://{{ ansible_default_ipv4.address }}:6014"
+openio_event_agent_tube: oio
+openio_event_agent_retries_per_second: 30
+openio_event_agent_batch_size: 500
+openio_event_agent_acct_update: true
+openio_event_agent_rdir_update: true
+
+openio_event_agent_provision_only: false
+openio_event_agent_location: "{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"
+
+# pipelines
+openio_event_agent_storage_content_new_pipeline:
+  - noop
+
+openio_event_agent_storage_content_append_pipeline:
+  - noop
+
+openio_event_agent_storage_content_broken_pipeline:
+  - content_rebuild
+
+openio_event_agent_storage_content_deleted_pipeline:
+  - content_cleaner
+
+openio_event_agent_storage_container_new_pipeline:
+  - account_update
+  - meta2_index
+
+openio_event_agent_storage_container_deleted_pipeline:
+  - account_update
+  - meta2_index
+
+openio_event_agent_storage_container_state_pipeline:
+  - account_update
+
+openio_event_agent_storage_chunk_new_pipeline:
+  - volume_index
+
+openio_event_agent_storage_chunk_deleted_pipeline:
+  - volume_index
+
+openio_event_agent_account_service_pipeline:
+  - noop
+
+openio_event_agent_storage_content_perfectible_pipeline: []
+
+## filters
+openio_event_agent_filter_noop:
+  use: "egg:oio#noop"
+
+openio_event_agent_filter_logger:
+  use: "egg:oio#logger"
+
+openio_event_agent_filter_volume_index:
+  use: "egg:oio#volume_index"
+
+openio_event_agent_filter_account_update:
+  use: "egg:oio#account_update"
+
+openio_event_agent_filter_content_rebuild:
+  use: "egg:oio#notify"
+  tube: "oio-rebuild"
+  queue_url: "{{ openio_event_agent_queue_url }}"
+
+openio_event_agent_filter_content_cleaner:
+  use: "egg:oio#content_cleaner"
+
+openio_event_agent_filter_meta2_index:
+  use: "egg:oio#meta2_index"
+
+openio_event_agent_filter_quarantine:
+  use: "egg:oio#notify"
+  tube: "vrc-quarantine"
+  queue_url: "{{ openio_event_agent_queue_url }}"
+
+openio_event_agent_filter_replication:
+  use: "egg:oio#notify"
+  tube: "oio-repli"
+  queue_url: "{{ openio_event_agent_queue_url }}"
+
+openio_event_agent_filter_content_improve:
+  use: "egg:oio#notify"
+  tube: "oio-improve"
+  queue_url: "{{ openio_event_agent_queue_url }}"
+
+openio_event_agent_filter_wildcard: {}
+#  indexing:
+#    use: "egg:oio#webhook"
+#    endpoint: "http://localhost:8000/api/core/v1/namespaces/default/services/indexing/proxy/invoke"
+
 ...

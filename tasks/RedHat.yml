@@ -3,7 +3,7 @@
   package:
     name: "{{ pkg }}"
     state: present
-  with_items: "{{ ROLENAME_packages }}"
+  with_items: "{{ event_agent_packages }}"
   loop_control:
     loop_var: pkg
   ignore_errors: "{{ ansible_check_mode }}"

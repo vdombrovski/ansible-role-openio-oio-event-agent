@@ -1,6 +1,6 @@
-# roles/ROLENAME/vars/Debian.yml
+# roles/event_agent/vars/Debian.yml
 # Distribution-specific variables for Ubuntu, Debian, ...
 ---
-ROLENAME_packages:
-  - openio-ROLENAME
+event_agent_packages:
+  - openio-sds
 ...
