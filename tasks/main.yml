@@ -35,8 +35,6 @@
   with_items:
     - "/etc/gridinit.d/{{ openio_event_agent_namespace }}"
     - "{{ openio_event_agent_sysconfig_dir }}/oio-event-agent-{{ openio_event_agent_serviceid }}"
-    #- "{{ openio_event_agent_volume }}"
-    - "/var/log/oio/sds/{{ openio_event_agent_namespace }}/oio-event-agent-{{ openio_event_agent_serviceid }}"
 
 - name: Ensure directories exists
   file:
@@ -48,6 +46,16 @@
     recurse: true
   with_items: "{{ _dir.results }}"
   when: not item.stat.exists
+  tags: install
+
+- name: Ensure log directory
+  file:
+    path: "/var/log/oio/sds/{{ openio_event_agent_namespace }}/oio-event-agent-{{ openio_event_agent_serviceid }}"
+    state: directory
+    owner: "{{ syslog_user }}"
+    group: openio
+    mode: 0750
+    recurse: true
   tags: install
 
 - name: Generate configuration files
