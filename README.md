@@ -23,11 +23,10 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_filter_content_rebuild` | `dict` | ... |
 | `openio_event_agent_filter_indexing` | `dict` | ... |
 | `openio_event_agent_filter_logger` | `dict` | ... |
-| `openio_event_agent_filter_meta2_index` | `dict` | ... |
+| `openio_event_agent_filter_volume_index` | `dict` | ... |
 | `openio_event_agent_filter_noop` | `dict` | ... |
 | `openio_event_agent_filter_quarantine` | `dict` | ... |
 | `openio_event_agent_filter_replication` | `dict` | ... |
-| `openio_event_agent_filter_volume_index` | `dict` | ... |
 | `openio_event_agent_gridinit_dir` | `"/etc/gridinit.d/{{ openio_event_agent_namespace }}"` | ... |
 | `openio_event_agent_gridinit_file_prefix` | `""` | ... |
 | `openio_event_agent_location` | `"{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"` | ... |

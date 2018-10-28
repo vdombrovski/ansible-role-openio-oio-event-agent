@@ -87,13 +87,6 @@ pipeline = {{ openio_event_agent_account_service_pipeline | join(' ') }}
 {% endfor %}
 {% endif %}
 
-{% if 'meta2_index' in pipeline_merged %}
-[filter:meta2_index]
-{% for k, v in openio_event_agent_filter_meta2_index.iteritems() %}
-{{ k }} = {{ v }}
-{% endfor %}
-{% endif %}
-
 {% if 'content_improve' in pipeline_merged %}
 [filter:content_improve]
 {% for k, v in openio_event_agent_filter_content_improve.iteritems() %}

@@ -34,11 +34,11 @@ openio_event_agent_storage_content_deleted_pipeline:
 
 openio_event_agent_storage_container_new_pipeline:
   - account_update
-  - meta2_index
+  - volume_index
 
 openio_event_agent_storage_container_deleted_pipeline:
   - account_update
-  - meta2_index
+  - volume_index
 
 openio_event_agent_storage_container_state_pipeline:
   - account_update
@@ -74,9 +74,6 @@ openio_event_agent_filter_content_rebuild:
 
 openio_event_agent_filter_content_cleaner:
   use: "egg:oio#content_cleaner"
-
-openio_event_agent_filter_meta2_index:
-  use: "egg:oio#meta2_index"
 
 openio_event_agent_filter_quarantine:
   use: "egg:oio#notify"
