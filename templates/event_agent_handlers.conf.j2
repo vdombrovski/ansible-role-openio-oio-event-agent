@@ -9,6 +9,12 @@ pipeline = {{ openio_event_agent_storage_content_append_pipeline | join(' ') }}
 [handler:storage.content.broken]
 pipeline = {{ openio_event_agent_storage_content_broken_pipeline | join(' ') }}
 
+[handler:storage.content.update]
+pipeline = {{ openio_event_agent_storage_content_update_pipeline | join(' ') }}
+
+[handler:storage.content.drained]
+pipeline = {{ openio_event_agent_storage_content_drained_pipeline | join(' ') }}
+
 [handler:storage.content.deleted]
 pipeline = {{ openio_event_agent_storage_content_deleted_pipeline | join(' ') }}
 
@@ -36,6 +42,8 @@ pipeline = {{ openio_event_agent_account_service_pipeline | join(' ') }}
 {% set pipeline_merged = openio_event_agent_storage_content_new_pipeline
                        + openio_event_agent_storage_content_append_pipeline
                        + openio_event_agent_storage_content_broken_pipeline
+                       + openio_event_agent_storage_content_update_pipeline
+                       + openio_event_agent_storage_content_drained_pipeline
                        + openio_event_agent_storage_content_deleted_pipeline
                        + openio_event_agent_storage_container_new_pipeline
                        + openio_event_agent_storage_container_deleted_pipeline

@@ -29,6 +29,12 @@ openio_event_agent_storage_content_append_pipeline:
 openio_event_agent_storage_content_broken_pipeline:
   - content_rebuild
 
+openio_event_agent_storage_content_update_pipeline:
+  - noop
+
+openio_event_agent_storage_content_drained_pipeline:
+  - noop
+
 openio_event_agent_storage_content_deleted_pipeline:
   - content_cleaner
 

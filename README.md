@@ -45,6 +45,8 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_storage_content_broken_pipeline` | `list` | ... |
 | `openio_event_agent_storage_content_deleted_pipeline` | `list` | ... |
 | `openio_event_agent_storage_content_new_pipeline` | `list` | ... |
+| `openio_event_agent_storage_content_drained_pipeline` | `list` | ... |
+| `openio_event_agent_storage_content_update_pipeline` | `list` | ... |
 | `openio_event_agent_storage_content_perfectible_pipeline` | `[]` | ... |
 | `openio_event_agent_tube` | `oio` | ... |
 
