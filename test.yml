@@ -5,7 +5,7 @@
   vars:
     NS: TRAVIS
   roles:
-    - role: repo
+    - role: users
     - role: repo
       openio_repository_no_log: false
       openio_repository_products:
@@ -28,6 +28,8 @@
         endpoint: "http://192.168.1.2:8000/api/core/v1/namespaces/default/services/indexing/proxy/invoke"
       openio_event_agent_storage_content_perfectible_pipeline:
         - content_improve
- 
-
+      openio_event_agent_filter_wildcard:
+        indexing:
+          use: "egg:oio#webhook"
+          endpoint: "http://localhost:8000/api/core/v1/namespaces/default/services/indexing/proxy/invoke"
 ...
