@@ -7,20 +7,6 @@
     - "{{ ansible_os_family }}.yml"
   tags: install
 
-- name: Create the 'openio' group
-  group:
-    name: openio
-    gid: "{{ openio_group_openio_gid | default('220')}}"
-  tags: install
-
-- name: Create the 'openio' user
-  user:
-    name: openio
-    comment: "openio account"
-    uid: "{{ openio_user_openio_uid | default('120')}}"
-    group: openio
-  tags: install
-
 - name: "Include {{ ansible_distribution }} tasks"
   include_tasks: "{{ item }}"
   with_first_found:
@@ -28,34 +14,19 @@
     - "{{ ansible_os_family }}.yml"
   tags: install
 
-- name: Test directories presence
-  stat:
-    path: "{{ item }}"
-  register: _dir
-  with_items:
-    - "/etc/gridinit.d/{{ openio_event_agent_namespace }}"
-    - "{{ openio_event_agent_sysconfig_dir }}/oio-event-agent-{{ openio_event_agent_serviceid }}"
-
 - name: Ensure directories exists
   file:
-    path: "{{ item.item }}"
+    path: "{{ item.path }}"
     state: directory
-    owner: openio
-    group: openio
-    mode: 0755
-    recurse: true
-  with_items: "{{ _dir.results }}"
-  when: not item.stat.exists
-  tags: install
-
-- name: Ensure log directory
-  file:
-    path: "/var/log/oio/sds/{{ openio_event_agent_namespace }}/oio-event-agent-{{ openio_event_agent_serviceid }}"
-    state: directory
-    owner: "{{ syslog_user }}"
-    group: openio
-    mode: 0750
-    recurse: true
+    owner: "{{ item.owner | default('openio') }}"
+    group: "{{ item.group | default('openio') }}"
+    mode: "{{ item.mode | default(0755) }}"
+  with_items:
+    - path: "/etc/gridinit.d/{{ openio_event_agent_namespace }}"
+    - path: "{{ openio_event_agent_sysconfig_dir }}/{{ openio_event_agent_servicename }}"
+    - path: "/var/log/oio/sds/{{ openio_event_agent_namespace }}/{{ openio_event_agent_servicename }}"
+      owner: "{{ syslog_user }}"
+      mode: "0750"
   tags: install
 
 - name: Generate configuration files
@@ -68,19 +39,19 @@
   with_items:
     - src: "event_agent.conf.j2"
       dest: "{{ openio_event_agent_sysconfig_dir }}/\
-        oio-event-agent-{{ openio_event_agent_serviceid }}/oio-event-agent-{{ openio_event_agent_serviceid }}.conf"
+        {{ openio_event_agent_servicename }}/{{ openio_event_agent_servicename }}.conf"
     - src: "event_agent_handlers.conf.j2"
       dest: "{{ openio_event_agent_sysconfig_dir }}/\
-        oio-event-agent-{{ openio_event_agent_serviceid }}/oio-event-handlers.conf"
+        {{ openio_event_agent_servicename }}/oio-event-handlers.conf"
     - src: "gridinit_event_agent.conf.j2"
       dest: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\
-        oio-event-agent-{{ openio_event_agent_serviceid }}.conf"
+        {{ openio_event_agent_servicename }}.conf"
   register: _event_agent_conf
 
 - name: restart event_agent
   shell: |
     gridinit_cmd reload
-    gridinit_cmd restart  {{openio_event_agent_namespace}}-oio-event-agent-{{openio_event_agent_serviceid}}
+    gridinit_cmd restart  {{ openio_event_agent_namespace }}-{{ openio_event_agent_servicename }}
   when:
     - _event_agent_conf.changed
     - not openio_event_agent_provision_only

@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
-[Service.{{ openio_event_agent_namespace }}-oio-event-agent-{{ openio_event_agent_serviceid }}]
+[Service.{{ openio_event_agent_namespace }}-{{ openio_event_agent_servicename }}]
 command=/usr/bin/oio-event-agent /etc/oio/sds/{{ openio_event_agent_namespace }}/oio-event-agent-{{ openio_event_agent_serviceid }}/oio-event-agent-{{ openio_event_agent_serviceid }}.conf
 enabled=true
 start_at_boot=true
