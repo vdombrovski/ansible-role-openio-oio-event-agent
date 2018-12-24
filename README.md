@@ -14,41 +14,36 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 
 | Variable   | Default | Comments (type)  |
 | :---       | :---    | :---             |
-| `openio_event_agent_account_service_pipeline` | `list` | ... |
-| `openio_event_agent_acct_update` | `true` | ... |
-| `openio_event_agent_batch_size` | `500` | ... |
-| `openio_event_agent_filter_account_update` | `dict` | ... |
-| `openio_event_agent_filter_content_cleaner` | `dict` | ... |
-| `openio_event_agent_filter_content_improve` | `dict` | ... |
-| `openio_event_agent_filter_content_rebuild` | `dict` | ... |
-| `openio_event_agent_filter_indexing` | `dict` | ... |
-| `openio_event_agent_filter_logger` | `dict` | ... |
-| `openio_event_agent_filter_volume_index` | `dict` | ... |
-| `openio_event_agent_filter_noop` | `dict` | ... |
-| `openio_event_agent_filter_quarantine` | `dict` | ... |
-| `openio_event_agent_filter_replication` | `dict` | ... |
-| `openio_event_agent_gridinit_dir` | `"/etc/gridinit.d/{{ openio_event_agent_namespace }}"` | ... |
-| `openio_event_agent_gridinit_file_prefix` | `""` | ... |
-| `openio_event_agent_location` | `"{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"` | ... |
-| `openio_event_agent_namespace` | `"OPENIO"` | ... |
-| `openio_event_agent_provision_only` | `false` | ... |
-| `openio_event_agent_queue_url` | `"beanstalk://{{ ansible_default_ipv4.address }}:6014"` | ... |
-| `openio_event_agent_rdir_update` | `true` | ... |
-| `openio_event_agent_retries_per_second` | `30` | ... |
-| `openio_event_agent_serviceid` | `"0"` | ... |
-| `openio_event_agent_storage_chunk_deleted_pipeline` | `list` | ... |
-| `openio_event_agent_storage_chunk_new_pipeline` | `list` | ... |
-| `openio_event_agent_storage_container_deleted_pipeline` | `list` | ... |
-| `openio_event_agent_storage_container_new_pipeline` | `list` | ... |
-| `openio_event_agent_storage_container_state_pipeline` | `list` | ... |
-| `openio_event_agent_storage_content_append_pipeline` | `list` | ... |
-| `openio_event_agent_storage_content_broken_pipeline` | `list` | ... |
-| `openio_event_agent_storage_content_deleted_pipeline` | `list` | ... |
-| `openio_event_agent_storage_content_new_pipeline` | `list` | ... |
-| `openio_event_agent_storage_content_drained_pipeline` | `list` | ... |
-| `openio_event_agent_storage_content_update_pipeline` | `list` | ... |
-| `openio_event_agent_storage_content_perfectible_pipeline` | `[]` | ... |
-| `openio_event_agent_tube` | `oio` | ... |
+| `openio_event_agent_account_service_pipeline` | `list` | List of middlewares involved in `account.services` |
+| `openio_event_agent_filter_account_update` | `dict` | Options of `account_update` filter |
+| `openio_event_agent_filter_content_cleaner` | `dict` | Options of `content_cleaner` filter |
+| `openio_event_agent_filter_content_improve` | `dict` | Options of `content_improve` filter |
+| `openio_event_agent_filter_content_rebuild` | `dict` | Options of `content_rebuild` filter |
+| `openio_event_agent_filter_logger` | `dict` | Options of `logger` filter |
+| `openio_event_agent_filter_volume_index` | `dict` | Options of `volume_index` filter |
+| `openio_event_agent_filter_noop` | `dict` | Options of `noop` filter |
+| `openio_event_agent_filter_quarantine` | `dict` | Options of `quarantine` filter |
+| `openio_event_agent_filter_replication` | `dict` | Options of `replication` filter |
+| `openio_event_agent_gridinit_dir` | `"/etc/gridinit.d/{{ openio_event_agent_namespace }}"` | Path to copy the gridinit conf |
+| `openio_event_agent_gridinit_file_prefix` | `""` | Maybe set it to {{ openio_ecd_namespace }}- for old gridinit's style |
+| `openio_event_agent_location` | `"{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"` | Location |
+| `openio_event_agent_namespace` | `"OPENIO"` | Namespace |
+| `openio_event_agent_provision_only` | `false` | Provision only without restarting services |
+| `openio_event_agent_queue_url` | `"beanstalk://{{ ansible_default_ipv4.address }}:6014"` | URL of queue service |
+| `openio_event_agent_serviceid` | `"0"` | ID in gridinit |
+| `openio_event_agent_storage_chunk_deleted_pipeline` | `list` | List of middlewares involved in `storage.chunk.deleted` |
+| `openio_event_agent_storage_chunk_new_pipeline` | `list` | List of middlewares involved in `storage.chunk.new` |
+| `openio_event_agent_storage_container_deleted_pipeline` | `list` | List of middlewares involved in `storage.container.deleted` |
+| `openio_event_agent_storage_container_new_pipeline` | `list` | List of middlewares involved in `storage.container.new` |
+| `openio_event_agent_storage_container_state_pipeline` | `list` | List of middlewares involved in `storage.container.state` |
+| `openio_event_agent_storage_content_append_pipeline` | `list` | List of middlewares involved in `storage.content.append` |
+| `openio_event_agent_storage_content_broken_pipeline` | `list` | List of middlewares involved in `storage.content.broken` |
+| `openio_event_agent_storage_content_deleted_pipeline` | `list` | List of middlewares involved in `storage.content.deleted` |
+| `openio_event_agent_storage_content_new_pipeline` | `list` | List of middlewares involved in `storage.content.new` |
+| `openio_event_agent_storage_content_drained_pipeline` | `list` | List of middlewares involved in `storage.content.drained` |
+| `openio_event_agent_storage_content_update_pipeline` | `list` | List of middlewares involved in `storage.content.update` |
+| `openio_event_agent_storage_content_perfectible_pipeline` | `[]` | List of middlewares involved in `storage.content.perfectible` |
+| `openio_event_agent_tube` | `oio` | Tube used in queue service |
 
 ## Dependencies
 
@@ -62,7 +57,7 @@ No dependencies.
   vars:
     NS: OPENIO
   roles:
-    - role: repo
+    - role: users
     - role: repo
       openio_repository_no_log: false
       openio_repository_products:
@@ -73,7 +68,7 @@ No dependencies.
     - role: gridinit
       openio_gridinit_namespace: "{{ NS }}"
       openio_gridinit_per_ns: true
-    - role: role_under_test
+    - role: oio-event-agent
       openio_event_agent_namespace: "{{ NS }}"
       openio_event_agent_queue_url: "beanstalk://{{ ansible_default_ipv4.address }}:6014"
       openio_event_agent_storage_content_new_pipeline:
