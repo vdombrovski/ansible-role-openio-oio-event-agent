@@ -11,10 +11,6 @@ openio_event_agent_concurrency: ""
 
 openio_event_agent_queue_url: "beanstalk://{{ ansible_default_ipv4.address }}:6014"
 openio_event_agent_tube: oio
-openio_event_agent_retries_per_second: 30
-openio_event_agent_batch_size: 500
-openio_event_agent_acct_update: true
-openio_event_agent_rdir_update: true
 
 openio_event_agent_provision_only: false
 openio_event_agent_location: "{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"
