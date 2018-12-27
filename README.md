@@ -44,6 +44,7 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_storage_content_update_pipeline` | `list` | List of middlewares involved in `storage.content.update` |
 | `openio_event_agent_storage_content_perfectible_pipeline` | `[]` | List of middlewares involved in `storage.content.perfectible` |
 | `openio_event_agent_tube` | `oio` | Tube used in queue service |
+| `openio_event_agent_workers` | `"{{ ansible_processor_vcpus / 2 }}"` | Number of workers  |
 
 ## Dependencies
 

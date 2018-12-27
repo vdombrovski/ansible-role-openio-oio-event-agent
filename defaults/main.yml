@@ -6,7 +6,7 @@ openio_event_agent_serviceid: "0"
 openio_event_agent_gridinit_dir: "/etc/gridinit.d/{{ openio_event_agent_namespace }}"
 openio_event_agent_gridinit_file_prefix: ""
 
-openio_event_agent_workers: ""
+openio_event_agent_workers: "{{ ansible_processor_vcpus / 2 | int }}"
 openio_event_agent_concurrency: ""
 
 openio_event_agent_queue_url: "beanstalk://{{ ansible_default_ipv4.address }}:6014"
