@@ -5,7 +5,7 @@ user = openio
 tube = {{ openio_event_agent_tube }}
 queue_url = {{ openio_event_agent_queue_url }}
 {% if openio_event_agent_workers %}
-worker = {{ openio_event_agent_workers }}
+worker = {{ openio_event_agent_workers | int }}
 {% endif %}
 {% if openio_event_agent_concurrency %}
 worker = {{ openio_event_agent_concurrency }}
