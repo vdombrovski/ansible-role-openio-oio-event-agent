@@ -5,10 +5,10 @@ user = openio
 tube = {{ openio_event_agent_tube }}
 queue_url = {{ openio_event_agent_queue_url }}
 {% if openio_event_agent_workers %}
-worker = {{ openio_event_agent_workers | int }}
+workers = {{ openio_event_agent_workers | int }}
 {% endif %}
 {% if openio_event_agent_concurrency %}
-worker = {{ openio_event_agent_concurrency }}
+concurrency = {{ openio_event_agent_concurrency | int }}
 {% endif %}
 handlers_conf = /etc/oio/sds/{{ openio_event_agent_namespace }}/{{ openio_event_agent_servicename }}/oio-event-handlers.conf
 log_facility = LOG_LOCAL0
