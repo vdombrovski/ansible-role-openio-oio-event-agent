@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+[event-agent]
+tube = oio-delete
+namespace = {{ openio_event_agent_namespace }}
+user = openio
+queue_url = {{ openio_event_agent_queue_url }}
+workers = {{ openio_event_agent_delete_workers }}
+concurrency = {{ openio_event_agent_delete_concurrency }}
+handlers_conf = /etc/oio/sds/{{ openio_event_agent_namespace }}/{{ openio_event_agent_servicename }}/oio-event-handlers-delete.conf
+log_facility = LOG_LOCAL0
+log_level = info
+log_name = {{ openio_event_delete_servicename }}
+log_address = /dev/log
+syslog_prefix = OIO,{{ openio_event_agent_namespace }},oio-event-agent,{{ openio_event_agent_serviceid }}

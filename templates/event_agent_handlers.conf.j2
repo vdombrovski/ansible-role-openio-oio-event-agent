@@ -16,7 +16,11 @@ pipeline = {{ openio_event_agent_storage_content_update_pipeline | join(' ') }}
 pipeline = {{ openio_event_agent_storage_content_drained_pipeline | join(' ') }}
 
 [handler:storage.content.deleted]
+{% if openio_event_agent_tube_delete_enabled %}
+pipeline = {{ openio_event_agent_storage_content_notify_delete_pipeline | join(' ') }}
+{% else %}
 pipeline = {{ openio_event_agent_storage_content_deleted_pipeline | join(' ') }}
+{% endif %}
 
 [handler:storage.content.perfectible]
 pipeline = {{ openio_event_agent_storage_content_perfectible_pipeline | join(' ') }}
@@ -45,6 +49,7 @@ pipeline = {{ openio_event_agent_account_service_pipeline | join(' ') }}
                        + openio_event_agent_storage_content_update_pipeline
                        + openio_event_agent_storage_content_drained_pipeline
                        + openio_event_agent_storage_content_deleted_pipeline
+                       + openio_event_agent_storage_content_notify_delete_pipeline
                        + openio_event_agent_storage_container_new_pipeline
                        + openio_event_agent_storage_container_deleted_pipeline
                        + openio_event_agent_storage_container_state_pipeline
@@ -53,6 +58,15 @@ pipeline = {{ openio_event_agent_account_service_pipeline | join(' ') }}
                        + openio_event_agent_storage_content_perfectible_pipeline
                        + openio_event_agent_account_service_pipeline %}
 ### filters
+{% if openio_event_agent_tube_delete_enabled %}
+{% if 'notify_delete' in pipeline_merged %}
+[filter:notify_delete]
+{% for k, v in openio_event_agent_filter_notify_delete.iteritems() %}
+{{ k }} = {{ v }}
+{% endfor %}
+{% endif %}
+{% endif %}
+
 {% if 'noop' in pipeline_merged %}
 [filter:noop]
 {% for k, v in openio_event_agent_filter_noop.iteritems() %}

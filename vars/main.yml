@@ -1,9 +1,9 @@
 ---
 openio_event_agent_sysconfig_dir: "/etc/oio/sds/{{ openio_event_agent_namespace }}"
 openio_event_agent_servicename: "oio-event-agent-{{ openio_event_agent_serviceid }}"
+openio_event_delete_servicename: "{{ openio_event_agent_servicename }}.1"
 
 openio_event_agent_definition_file: >
   "{{ openio_event_agent_sysconfig_dir }}/
   {{ openio_event_agent_servicename }}/{{ openio_event_agent_servicename }}.conf"
-
 ...
