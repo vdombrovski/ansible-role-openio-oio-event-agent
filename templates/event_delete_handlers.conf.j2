@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+[handler:storage.content.deleted]
+pipeline = content_cleaner
+
+[filter:content_cleaner]
+use = egg:oio#content_cleaner

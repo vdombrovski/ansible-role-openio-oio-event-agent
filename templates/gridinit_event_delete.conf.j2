@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+[Service.{{ openio_event_agent_namespace }}-{{ openio_event_delete_servicename }}]
+command=/usr/bin/oio-event-agent /etc/oio/sds/{{ openio_event_agent_namespace }}/oio-event-agent-{{ openio_event_agent_serviceid }}/{{ openio_event_delete_servicename }}.conf
+enabled=true
+start_at_boot=true
+on_die=respawn
+group={{ openio_event_agent_namespace }},oio-event-agent,{{ openio_event_agent_serviceid }}
+uid=openio
+gid=openio
+env.PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin

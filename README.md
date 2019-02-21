@@ -29,6 +29,7 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_location` | `"{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"` | Location |
 | `openio_event_agent_namespace` | `"OPENIO"` | Namespace |
 | `openio_event_agent_provision_only` | `false` | Provision only without restarting services |
+| `openio_event_agent_tube_delete_enabled` | `false` | Deploy a dedicated agent to process delete events |
 | `openio_event_agent_queue_url` | `"beanstalk://{{ ansible_default_ipv4.address }}:6014"` | URL of queue service |
 | `openio_event_agent_serviceid` | `"0"` | ID in gridinit |
 | `openio_event_agent_storage_chunk_deleted_pipeline` | `list` | List of middlewares involved in `storage.chunk.deleted` |
@@ -43,8 +44,11 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_storage_content_drained_pipeline` | `list` | List of middlewares involved in `storage.content.drained` |
 | `openio_event_agent_storage_content_update_pipeline` | `list` | List of middlewares involved in `storage.content.update` |
 | `openio_event_agent_storage_content_perfectible_pipeline` | `[]` | List of middlewares involved in `storage.content.perfectible` |
+| `openio_event_agent_storage_content_notify_delete_pipeline` | `[]` | List of middlewares involved in `storage.content.deleted` with separate delete queue |
 | `openio_event_agent_tube` | `oio` | Tube used in queue service |
 | `openio_event_agent_workers` | `"{{ ansible_processor_vcpus / 2 }}"` | Number of workers  |
+| `openio_event_agent_delete_workers` | `"1"` | Number of workers of the event delete agent  |
+| `openio_event_agent_delete_concurrency` | `"1"` | Concurrency of the event delete agent  |
 
 ## Dependencies
 

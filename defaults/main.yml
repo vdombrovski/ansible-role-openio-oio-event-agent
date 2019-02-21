@@ -9,11 +9,17 @@ openio_event_agent_gridinit_file_prefix: ""
 openio_event_agent_workers: "{{ ansible_processor_vcpus / 2 | int }}"
 openio_event_agent_concurrency: ""
 
+openio_event_agent_delete_workers: "1"
+openio_event_agent_delete_concurrency: "1"
+
 openio_event_agent_queue_url: "beanstalk://{{ ansible_default_ipv4.address }}:6014"
 openio_event_agent_tube: oio
 
+
 openio_event_agent_provision_only: false
 openio_event_agent_location: "{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"
+
+openio_event_agent_tube_delete_enabled: false
 
 # pipelines
 openio_event_agent_storage_content_new_pipeline:
@@ -33,6 +39,9 @@ openio_event_agent_storage_content_drained_pipeline:
 
 openio_event_agent_storage_content_deleted_pipeline:
   - content_cleaner
+
+openio_event_agent_storage_content_notify_delete_pipeline:
+  - notify_delete
 
 openio_event_agent_storage_container_new_pipeline:
   - account_update
@@ -91,6 +100,11 @@ openio_event_agent_filter_replication:
 openio_event_agent_filter_content_improve:
   use: "egg:oio#notify"
   tube: "oio-improve"
+  queue_url: "{{ openio_event_agent_queue_url }}"
+
+openio_event_agent_filter_notify_delete:
+  use: "egg:oio#notify"
+  tube: "oio-delete"
   queue_url: "{{ openio_event_agent_queue_url }}"
 
 openio_event_agent_filter_wildcard: {}

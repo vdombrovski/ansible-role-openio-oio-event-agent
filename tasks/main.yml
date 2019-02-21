@@ -48,12 +48,39 @@
         {{ openio_event_agent_servicename }}.conf"
   register: _event_agent_conf
 
+- name: "Generate configuration files (event delete)"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: openio
+    group: openio
+    mode: 0644
+  with_items:
+    - src: "event_delete.conf.j2"
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+        {{ openio_event_agent_servicename }}/{{ openio_event_delete_servicename }}.conf"
+    - src: "event_delete_handlers.conf.j2"
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+        {{ openio_event_agent_servicename }}/oio-event-handlers-delete.conf"
+    - src: "gridinit_event_delete.conf.j2"
+      dest: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\
+        {{ openio_event_delete_servicename }}.conf"
+  register: _event_delete_conf
+  when: openio_event_agent_tube_delete_enabled
+
+- name: "Ensure proper state for gridinit service"
+  file:
+    name: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\
+      {{ openio_event_delete_servicename }}.conf"
+    state: "{{ 'file' if openio_event_agent_tube_delete_enabled else 'absent' }}"
+  register: _event_delete_conf
+
 - name: restart event_agent
   shell: |
     gridinit_cmd reload
     gridinit_cmd restart  {{ openio_event_agent_namespace }}-{{ openio_event_agent_servicename }}
   when:
-    - _event_agent_conf.changed
+    - _event_agent_conf.changed or _event_delete_conf.changed
     - not openio_event_agent_provision_only
   tags: configure
 ...
