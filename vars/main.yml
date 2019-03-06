@@ -5,5 +5,5 @@ openio_event_delete_servicename: "{{ openio_event_agent_servicename }}.1"
 
 openio_event_agent_definition_file: >
   "{{ openio_event_agent_sysconfig_dir }}/
-  {{ openio_event_agent_servicename }}/{{ openio_event_agent_servicename }}.conf"
+  {{ openio_event_agent_servicename }}/{{ openio_event_agent_servicename }}.conf"
 ...

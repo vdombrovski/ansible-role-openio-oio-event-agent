@@ -23,7 +23,7 @@
     mode: "{{ item.mode | default(0755) }}"
   with_items:
     - path: "/etc/gridinit.d/{{ openio_event_agent_namespace }}"
-    - path: "{{ openio_event_agent_sysconfig_dir }}/{{ openio_event_agent_servicename }}"
+    - path: "{{ openio_event_agent_sysconfig_dir }}/{{ openio_event_agent_servicename }}"
     - path: "/var/log/oio/sds/{{ openio_event_agent_namespace }}/{{ openio_event_agent_servicename }}"
       owner: "{{ syslog_user }}"
       mode: "0750"
@@ -38,10 +38,10 @@
     mode: 0644
   with_items:
     - src: "event_agent.conf.j2"
-      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
         {{ openio_event_agent_servicename }}/{{ openio_event_agent_servicename }}.conf"
     - src: "event_agent_handlers.conf.j2"
-      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
         {{ openio_event_agent_servicename }}/oio-event-handlers.conf"
     - src: "gridinit_event_agent.conf.j2"
       dest: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\
@@ -57,10 +57,10 @@
     mode: 0644
   with_items:
     - src: "event_delete.conf.j2"
-      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
         {{ openio_event_agent_servicename }}/{{ openio_event_delete_servicename }}.conf"
     - src: "event_delete_handlers.conf.j2"
-      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
         {{ openio_event_agent_servicename }}/oio-event-handlers-delete.conf"
     - src: "gridinit_event_delete.conf.j2"
       dest: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\
