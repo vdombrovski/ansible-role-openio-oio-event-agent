@@ -75,12 +75,23 @@
     state: "{{ 'file' if openio_event_agent_tube_delete_enabled else 'absent' }}"
   register: _event_delete_conf
 
-- name: restart event_agent
-  shell: |
-    gridinit_cmd reload
-    gridinit_cmd restart  {{ openio_event_agent_namespace }}-{{ openio_event_agent_servicename }}
+- name: reload gridinit config
+  command: gridinit_cmd reload
   when:
     - _event_agent_conf.changed or _event_delete_conf.changed
+    - not openio_event_agent_provision_only
+
+- name: restart event_agent
+  command: gridinit_cmd restart {{ openio_event_agent_namespace }}-{{ openio_event_agent_servicename }}
+  when:
+    - _event_agent_conf.changed
+    - not openio_event_agent_provision_only
+  tags: configure
+
+- name: restart event_delete
+  command: gridinit_cmd restart {{ openio_event_agent_namespace }}-{{ openio_event_delete_servicename }}
+  when:
+    - _event_delete_conf.changed
     - not openio_event_agent_provision_only
   tags: configure
 ...
