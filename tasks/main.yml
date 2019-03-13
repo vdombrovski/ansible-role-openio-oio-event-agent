@@ -74,6 +74,7 @@
       {{ openio_event_delete_servicename }}.conf"
     state: "{{ 'file' if openio_event_agent_tube_delete_enabled else 'absent' }}"
   register: _event_delete_conf
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: reload gridinit config
   command: gridinit_cmd reload
