@@ -1,7 +1,7 @@
 # roles/event_agent/defaults/main.yml
 ---
-openio_event_agent_namespace: "OPENIO"
-openio_event_agent_serviceid: "0"
+openio_event_agent_namespace: "{{ namespace | default('OPENIO') }}"
+openio_event_agent_serviceid: "{{ 0 + openio_legacy_serviceid | d(0) | int }}"
 
 openio_event_agent_gridinit_dir: "/etc/gridinit.d/{{ openio_event_agent_namespace }}"
 openio_event_agent_gridinit_file_prefix: ""
@@ -12,14 +12,13 @@ openio_event_agent_concurrency: ""
 openio_event_agent_delete_workers: "1"
 openio_event_agent_delete_concurrency: "1"
 
-openio_event_agent_queue_url: "beanstalk://{{ ansible_default_ipv4.address }}:6014"
+openio_event_agent_queue_url: "beanstalk://{{ openio_bind_address | d(ansible_default_ipv4.address) }}:6014"
 openio_event_agent_tube: oio
-
 
 openio_event_agent_provision_only: false
 openio_event_agent_location: "{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"
 
-openio_event_agent_tube_delete_enabled: false
+openio_event_agent_tube_delete_enabled: true
 
 # pipelines
 openio_event_agent_storage_content_new_pipeline:
@@ -64,7 +63,8 @@ openio_event_agent_account_service_pipeline:
   - account_update
   - volume_index
 
-openio_event_agent_storage_content_perfectible_pipeline: []
+openio_event_agent_storage_content_perfectible_pipeline:
+  - content_improve
 
 ## filters
 openio_event_agent_filter_noop:

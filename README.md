@@ -29,7 +29,7 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_location` | `"{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"` | Location |
 | `openio_event_agent_namespace` | `"OPENIO"` | Namespace |
 | `openio_event_agent_provision_only` | `false` | Provision only without restarting services |
-| `openio_event_agent_tube_delete_enabled` | `false` | Deploy a dedicated agent to process delete events |
+| `openio_event_agent_tube_delete_enabled` | `true` | Deploy a dedicated agent to process delete events |
 | `openio_event_agent_queue_url` | `"beanstalk://{{ ansible_default_ipv4.address }}:6014"` | URL of queue service |
 | `openio_event_agent_serviceid` | `"0"` | ID in gridinit |
 | `openio_event_agent_storage_chunk_deleted_pipeline` | `list` | List of middlewares involved in `storage.chunk.deleted` |
