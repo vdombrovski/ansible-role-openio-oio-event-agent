@@ -82,17 +82,40 @@
     - _event_agent_conf.changed or _event_delete_conf.changed
     - not openio_event_agent_provision_only
 
-- name: restart event_agent
+- name: "restart event_agent to apply the new configuration"
   command: gridinit_cmd restart {{ openio_event_agent_namespace }}-{{ openio_event_agent_servicename }}
+  register: _restart_event_agent
   when:
-    - _event_agent_conf.changed
+    - _event_agent_conf is changed
     - not openio_event_agent_provision_only
   tags: configure
 
-- name: restart event_delete
+- name: "restart event_delete to apply the new configuration"
   command: gridinit_cmd restart {{ openio_event_agent_namespace }}-{{ openio_event_delete_servicename }}
+  register: _restart_event_delete
   when:
-    - _event_delete_conf.changed
+    - _event_delete_conf is changed
     - not openio_event_agent_provision_only
   tags: configure
+
+- block:
+    - name: "Ensure event_agent is started"
+      command: gridinit_cmd start {{ openio_event_agent_namespace }}-{{ openio_event_agent_servicename }}
+      register: _start_event_agent
+      changed_when: '"Success" in _start_event_agent.stdout'
+      when:
+        - not openio_event_agent_provision_only
+        - _restart_event_agent is skipped
+      tags: configure
+
+    - name: "Ensure event_delete is started"
+      command: gridinit_cmd start {{ openio_event_agent_namespace }}-{{ openio_event_delete_servicename }}
+      register: _start_event_delete
+      changed_when: '"Success" in _start_event_delete.stdout'
+      when:
+        - not openio_event_agent_provision_only
+        - _restart_event_delete is skipped
+      tags: configure
+
+  when: openio_bootstrap | d(false)
 ...

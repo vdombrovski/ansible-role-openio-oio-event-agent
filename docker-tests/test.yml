@@ -4,18 +4,17 @@
   become: true
   vars:
     NS: TRAVIS
+    openio_bootstrap: true
   roles:
     - role: users
     - role: repo
       openio_repository_no_log: false
-      openio_repository_products:
-        sds:
-          release: "18.10"
-    - role: namespace
-      openio_namespace_name: "{{ NS }}"
+      openio_repository_mirror_host: mirror2.openio.io
     - role: gridinit
       openio_gridinit_namespace: "{{ NS }}"
       openio_gridinit_per_ns: true
+    - role: namespace
+      openio_namespace_name: "{{ NS }}"
     - role: role_under_test
       openio_event_agent_tube_delete_enabled: true
       openio_event_agent_namespace: "{{ NS }}"
