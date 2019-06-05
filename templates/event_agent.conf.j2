@@ -4,7 +4,7 @@ namespace = {{ openio_event_agent_namespace }}
 user = openio
 tube = {{ openio_event_agent_tube }}
 queue_url = {{ openio_event_agent_queue_url }}
-{% if openio_event_agent_workers %}
+{% if (openio_event_agent_workers | int) > 0 %}
 workers = {{ openio_event_agent_workers | int }}
 {% endif %}
 {% if openio_event_agent_concurrency %}
