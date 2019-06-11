@@ -5,7 +5,9 @@
   with_first_found:
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
-  tags: install
+  tags:
+    - install
+    - configure
 
 - name: "Include {{ ansible_distribution }} tasks"
   include_tasks: "{{ item }}"
@@ -27,7 +29,7 @@
     - path: "/var/log/oio/sds/{{ openio_event_agent_namespace }}/{{ openio_event_agent_servicename }}"
       owner: "{{ syslog_user }}"
       mode: "0750"
-  tags: install
+  tags: configure
 
 - name: Generate configuration files
   template:
@@ -47,6 +49,7 @@
       dest: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\
         {{ openio_event_agent_servicename }}.conf"
   register: _event_agent_conf
+  tags: configure
 
 - name: "Generate configuration files (event delete)"
   template:
@@ -67,6 +70,7 @@
         {{ openio_event_delete_servicename }}.conf"
   register: _event_delete_conf
   when: openio_event_agent_tube_delete_enabled
+  tags: configure
 
 - name: "Ensure proper state for gridinit service"
   file:
@@ -75,12 +79,14 @@
     state: "{{ 'file' if openio_event_agent_tube_delete_enabled else 'absent' }}"
   register: _event_delete_conf
   ignore_errors: "{{ ansible_check_mode }}"
+  tags: configure
 
 - name: reload gridinit config
   command: gridinit_cmd reload
   when:
     - _event_agent_conf.changed or _event_delete_conf.changed
     - not openio_event_agent_provision_only
+  tags: configure
 
 - name: "restart event_agent to apply the new configuration"
   command: gridinit_cmd restart {{ openio_event_agent_namespace }}-{{ openio_event_agent_servicename }}
