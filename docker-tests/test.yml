@@ -16,6 +16,7 @@
     - role: namespace
       openio_namespace_name: "{{ NS }}"
     - role: role_under_test
+      openio_event_agent_replicator_enabled: true
       openio_event_agent_tube_delete_enabled: true
       openio_event_agent_namespace: "{{ NS }}"
       openio_event_agent_queue_url: "beanstalk://{{ ansible_default_ipv4.address }}:6014"

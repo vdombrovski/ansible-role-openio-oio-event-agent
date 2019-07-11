@@ -20,35 +20,42 @@ openio_event_agent_location: "{{ ansible_hostname }}.{{ openio_event_agent_servi
 
 openio_event_agent_tube_delete_enabled: true
 
-# pipelines
-openio_event_agent_storage_content_new_pipeline:
-  - noop
+openio_event_agent_replicator_enabled: false
 
-openio_event_agent_storage_content_append_pipeline:
-  - noop
+# pipelines
+openio_event_agent_storage_content_new_pipeline: "{{ [] if not openio_event_agent_replicator_enabled \
+  else ['replication'] }}"
+
+openio_event_agent_storage_content_append_pipeline: "{{ [] if not openio_event_agent_replicator_enabled \
+  else ['replication'] }}"
 
 openio_event_agent_storage_content_broken_pipeline:
   - content_rebuild
 
-openio_event_agent_storage_content_update_pipeline:
-  - noop
+openio_event_agent_storage_content_update_pipeline: "{{ [] if not openio_event_agent_replicator_enabled else \
+  ['replication'] }}"
 
-openio_event_agent_storage_content_drained_pipeline:
-  - noop
+openio_event_agent_storage_content_drained_pipeline: "{{ [] if not openio_event_agent_replicator_enabled else \
+  ['replication'] }}"
 
-openio_event_agent_storage_content_deleted_pipeline:
-  - content_cleaner
+openio_event_agent_storage_content_deleted_pipeline: "{{ ['content_cleaner'] \
+  if not openio_event_agent_replicator_enabled \
+  else ['replication','content_cleaner'] }}"
 
-openio_event_agent_storage_content_notify_delete_pipeline:
-  - notify_delete
+openio_event_agent_storage_content_notify_delete_pipeline: "{{ ['notify_delete'] \
+  if not openio_event_agent_replicator_enabled \
+  else ['replication','notify_delete'] }}"
 
-openio_event_agent_storage_container_new_pipeline:
-  - account_update
-  - volume_index
+openio_event_agent_storage_container_new_pipeline: "{{ ['account_update', 'volume_index'] \
+  if not openio_event_agent_replicator_enabled \
+  else ['replication','account_update', 'volume_index'] }}"
 
-openio_event_agent_storage_container_deleted_pipeline:
-  - account_update
-  - volume_index
+openio_event_agent_storage_container_deleted_pipeline: "{{ ['account_update', 'volume_index'] \
+  if not openio_event_agent_replicator_enabled \
+  else ['replication','account_update', 'volume_index'] }}"
+
+openio_event_agent_storage_container_update_pipeline: "{{ [] if not openio_event_agent_replicator_enabled \
+  else ['replication'] }}"
 
 openio_event_agent_storage_container_state_pipeline:
   - account_update

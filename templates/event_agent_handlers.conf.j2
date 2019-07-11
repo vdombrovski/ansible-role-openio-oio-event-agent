@@ -31,6 +31,9 @@ pipeline = {{ openio_event_agent_storage_container_new_pipeline | join(' ') }}
 [handler:storage.container.deleted]
 pipeline = {{ openio_event_agent_storage_container_deleted_pipeline | join(' ') }}
 
+[handler:storage.container.update]
+pipeline = {{ openio_event_agent_storage_container_update_pipeline | join(' ') }}
+
 [handler:storage.container.state]
 pipeline = {{ openio_event_agent_storage_container_state_pipeline | join(' ') }}
 
@@ -52,6 +55,7 @@ pipeline = {{ openio_event_agent_account_service_pipeline | join(' ') }}
                        + openio_event_agent_storage_content_notify_delete_pipeline
                        + openio_event_agent_storage_container_new_pipeline
                        + openio_event_agent_storage_container_deleted_pipeline
+                       + openio_event_agent_storage_container_update_pipeline
                        + openio_event_agent_storage_container_state_pipeline
                        + openio_event_agent_storage_chunk_new_pipeline
                        + openio_event_agent_storage_chunk_deleted_pipeline
