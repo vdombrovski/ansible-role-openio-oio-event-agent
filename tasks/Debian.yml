@@ -2,7 +2,7 @@
 - name: Install packages
   package:
     name: "{{ pkg }}"
-    state: present
+    state: "{{ 'latest' if openio_event_agent_package_upgrade else 'present' }}"
   with_items: "{{ event_agent_packages }}"
   loop_control:
     loop_var: pkg

@@ -16,6 +16,7 @@ openio_event_agent_queue_url: "beanstalk://{{ openio_bind_address | d(ansible_de
 openio_event_agent_tube: oio
 
 openio_event_agent_provision_only: false
+openio_event_agent_package_upgrade: "{{ openio_package_upgrade | d(false) }}"
 openio_event_agent_location: "{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"
 
 openio_event_agent_tube_delete_enabled: true
