@@ -50,6 +50,7 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_workers` | `"{{ ansible_processor_vcpus / 2 }}"` | Number of workers  |
 | `openio_event_agent_delete_workers` | `"1"` | Number of workers of the event delete agent  |
 | `openio_event_agent_delete_concurrency` | `"1"` | Concurrency of the event delete agent  |
+| `openio_event_agent_package_upgrade`       | `false` | Set the packages to the latest version (to be set in extra_vars) |
 
 ## Dependencies
 
