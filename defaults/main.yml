@@ -67,6 +67,9 @@ openio_event_agent_storage_chunk_new_pipeline:
 openio_event_agent_storage_chunk_deleted_pipeline:
   - volume_index
 
+openio_event_agent_storage_meta2_deleted_pipeline:
+  - volume_index
+
 openio_event_agent_account_service_pipeline:
   - account_update
   - volume_index

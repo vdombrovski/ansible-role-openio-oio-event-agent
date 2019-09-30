@@ -25,6 +25,9 @@ pipeline = {{ openio_event_agent_storage_content_deleted_pipeline | join(' ') }}
 [handler:storage.content.perfectible]
 pipeline = {{ openio_event_agent_storage_content_perfectible_pipeline | join(' ') }}
 
+[handler:storage.meta2.deleted]
+pipeline = {{ openio_event_agent_storage_meta2_deleted_pipeline | join(' ') }}
+
 [handler:storage.container.new]
 pipeline = {{ openio_event_agent_storage_container_new_pipeline | join(' ') }}
 
