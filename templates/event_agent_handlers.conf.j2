@@ -68,7 +68,7 @@ pipeline = {{ openio_event_agent_account_service_pipeline | join(' ') }}
 {% if openio_event_agent_tube_delete_enabled %}
 {% if 'notify_delete' in pipeline_merged %}
 [filter:notify_delete]
-{% for k, v in openio_event_agent_filter_notify_delete.iteritems() %}
+{% for k, v in openio_event_agent_filter_notify_delete.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
@@ -76,71 +76,71 @@ pipeline = {{ openio_event_agent_account_service_pipeline | join(' ') }}
 
 {% if 'noop' in pipeline_merged %}
 [filter:noop]
-{% for k, v in openio_event_agent_filter_noop.iteritems() %}
+{% for k, v in openio_event_agent_filter_noop.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
 {% if 'content_cleaner' in pipeline_merged %}
 [filter:content_cleaner]
-{% for k, v in openio_event_agent_filter_content_cleaner.iteritems() %}
+{% for k, v in openio_event_agent_filter_content_cleaner.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
 {% if 'content_rebuild' in pipeline_merged %}
 [filter:content_rebuild]
-{% for k, v in openio_event_agent_filter_content_rebuild.iteritems() %}
+{% for k, v in openio_event_agent_filter_content_rebuild.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
 {% if 'account_update' in pipeline_merged %}
 [filter:account_update]
-{% for k, v in openio_event_agent_filter_account_update.iteritems() %}
+{% for k, v in openio_event_agent_filter_account_update.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
 {% if 'volume_index' in pipeline_merged %}
 [filter:volume_index]
-{% for k, v in openio_event_agent_filter_volume_index.iteritems() %}
+{% for k, v in openio_event_agent_filter_volume_index.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
 {% if 'logger' in pipeline_merged %}
 [filter:logger]
-{% for k, v in openio_event_agent_filter_logger.iteritems() %}
+{% for k, v in openio_event_agent_filter_logger.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
 {% if 'content_improve' in pipeline_merged %}
 [filter:content_improve]
-{% for k, v in openio_event_agent_filter_content_improve.iteritems() %}
+{% for k, v in openio_event_agent_filter_content_improve.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
 {% if 'quarantine' in pipeline_merged %}
 [filter:quarantine]
-{% for k, v in openio_event_agent_filter_quarantine.iteritems() %}
+{% for k, v in openio_event_agent_filter_quarantine.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
 {% if 'replication' in pipeline_merged %}
 [filter:replication]
-{% for k, v in openio_event_agent_filter_replication.iteritems() %}
+{% for k, v in openio_event_agent_filter_replication.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 {% endif %}
 
-{% for name,params in openio_event_agent_filter_wildcard.iteritems() %}
+{% for name,params in openio_event_agent_filter_wildcard.items() | list %}
 {%   if name in pipeline_merged %}
 [filter:{{ name }}]
-{%     for k, v in params.iteritems() %}
+{%     for k, v in params.items() | list %}
 {{ k }} = {{ v }}
 {%     endfor %}
 {%   endif %}
