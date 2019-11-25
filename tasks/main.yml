@@ -72,6 +72,27 @@
   when: openio_event_agent_tube_delete_enabled
   tags: configure
 
+- name: "Generate configuration files (event xcute)"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: openio
+    group: openio
+    mode: 0644
+  with_items:
+    - src: "event_xcute.conf.j2"
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+        {{ openio_event_agent_servicename }}/{{ openio_event_xcute_servicename }}.conf"
+    - src: "event_xcute_handlers.conf.j2"
+      dest: "{{ openio_event_agent_sysconfig_dir }}/\
+        {{ openio_event_agent_servicename }}/oio-event-handlers-xcute.conf"
+    - src: "gridinit_event_xcute.conf.j2"
+      dest: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\
+        {{ openio_event_xcute_servicename }}.conf"
+  register: _event_xcute_conf
+  when: openio_event_agent_tube_xcute_enabled
+  tags: configure
+
 - name: "Ensure proper state for gridinit service"
   file:
     name: "{{ openio_event_agent_gridinit_dir }}/{{ openio_event_agent_gridinit_file_prefix }}\

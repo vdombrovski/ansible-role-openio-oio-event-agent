@@ -11,6 +11,8 @@ openio_event_agent_concurrency: ""
 
 openio_event_agent_delete_workers: "1"
 openio_event_agent_delete_concurrency: "1"
+openio_event_agent_xcute_workers: "2"
+openio_event_agent_xcute_concurrency: "5"
 
 openio_event_agent_queue_url: "beanstalk://{{ openio_bind_address | d(ansible_default_ipv4.address) }}:6014"
 openio_event_agent_tube: oio
@@ -20,7 +22,7 @@ openio_event_agent_package_upgrade: "{{ openio_package_upgrade | d(false) }}"
 openio_event_agent_location: "{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"
 
 openio_event_agent_tube_delete_enabled: true
-
+openio_event_agent_tube_xcute_enabled: true
 openio_event_agent_replicator_enabled: false
 
 # pipelines

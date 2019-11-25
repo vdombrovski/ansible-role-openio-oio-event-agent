@@ -30,6 +30,7 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_namespace` | `"OPENIO"` | Namespace |
 | `openio_event_agent_provision_only` | `false` | Provision only without restarting services |
 | `openio_event_agent_tube_delete_enabled` | `true` | Deploy a dedicated agent to process delete events |
+| `openio_event_agent_tube_xcute_enabled` | `true` | Deploy a dedicated agent to process xcute events |
 | `openio_event_agent_queue_url` | `"beanstalk://{{ ansible_default_ipv4.address }}:6014"` | URL of queue service |
 | `openio_event_agent_replicator_enabled` | `false` | Add filters for replicator |
 | `openio_event_agent_serviceid` | `"0"` | ID in gridinit |
@@ -50,6 +51,8 @@ An Ansible role for oio-event-agent. Specifically, the responsibilities of this 
 | `openio_event_agent_workers` | `"{{ ansible_processor_vcpus / 2 }}"` | Number of workers  |
 | `openio_event_agent_delete_workers` | `"1"` | Number of workers of the event delete agent  |
 | `openio_event_agent_delete_concurrency` | `"1"` | Concurrency of the event delete agent  |
+| `openio_event_agent_xcute_workers` | `"2"` | Number of workers of the event xcute agent  |
+| `openio_event_agent_xcute_concurrency` | `"5"` | Concurrency of the event xcute agent  |
 | `openio_event_agent_package_upgrade`       | `false` | Set the packages to the latest version (to be set in extra_vars) |
 
 ## Dependencies
