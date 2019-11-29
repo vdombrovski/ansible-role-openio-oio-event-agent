@@ -22,7 +22,7 @@ openio_event_agent_package_upgrade: "{{ openio_package_upgrade | d(false) }}"
 openio_event_agent_location: "{{ ansible_hostname }}.{{ openio_event_agent_serviceid }}"
 
 openio_event_agent_tube_delete_enabled: true
-openio_event_agent_tube_xcute_enabled: true
+openio_event_agent_tube_xcute_enabled: "{{ groups.xcute is defined and groups.xcute | length >= 1  | d(false) }}"
 openio_event_agent_replicator_enabled: false
 
 # pipelines
